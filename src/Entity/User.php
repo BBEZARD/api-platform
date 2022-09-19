@@ -5,10 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\MeController;
-use App\Controller\SecurityController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\Response;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -19,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 	],
 	itemOperations: [
-		'me' => [
+		'me'  => [
 			'pagination_enabled' => false,
 			'path'               => '/me',
 			'method'             => 'get',
@@ -27,7 +26,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 			'read'               => false,
 			'openapi_context'    => [
 				'summary'  => 'Récupère mes informations de connexion',
-				'security' => [ 'cookieAuth' => [ '' ] ]
+				'security' => [ [ 'bearerAuth' => [] ] ]
 			]
 		],
 		'get' => [
@@ -41,7 +40,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 	security: 'is_granted("ROLE_USER")'
 )
 ]
-class User implements UserInterface, PasswordAuthenticatedUserInterface {
+class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUserInterface {
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column( type: 'integer' )]
@@ -61,6 +60,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
 
 	public function getId(): ?int {
 		return $this->id;
+	}
+
+	public function setId( ?int $id ): self {
+		$this->id = $id;
+
+		return $this;
 	}
 
 	public function getEmail(): ?string {
@@ -135,5 +140,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
 	public function eraseCredentials() {
 		// If you store any temporary, sensitive data on the user, clear it here
 		// $this->plainPassword = null;
+	}
+
+	public static function createFromPayload( $id, array $payload ) {
+
+		return ( new User() )
+			->setId( $id )
+			->setEmail( $payload['email'] ?? '');
 	}
 }

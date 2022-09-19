@@ -31,10 +31,10 @@ class OpenApiFactory implements OpenApiFactoryInterface {
 		$securitySchemes = $openApi->getComponents()->getSecuritySchemes();
 		$schemes         = $openApi->getComponents()->getSchemas();
 
-		$securitySchemes['cookieAuth'] = new \ArrayObject( [
-			'type' => 'apiKey',
-			'in'   => 'cookie',
-			'name' => 'PHPSESSID'
+		$securitySchemes['bearerAuth'] = new \ArrayObject( [
+			'type' => 'http',
+			'scheme'   => 'bearer',
+			'bearerFormat' => 'JWT'
 		] );
 
 		$schemes['Credentials'] = new \ArrayObject( [
@@ -51,16 +51,26 @@ class OpenApiFactory implements OpenApiFactoryInterface {
 			]
 		] );
 
+		$schemes['Token'] = new \ArrayObject( [
+			'type'       => 'object',
+			'properties' => [
+				'token' => [
+					'type'    => 'string',
+					'readOnly' => true,
+					]
+			]
+		] );
+
 		$loginPathItem = new Model\PathItem(
 			post: new Model\Operation(
 				operationId: 'postApiLogin',
 				tags: [ 'Auth' ],
 				responses: [
 					'200' => [
-						'description' => 'Connexion utilisateur',
+						'description' => 'Token JWT',
 						'content'     => [
 							'application/json' => [
-								'schema' => [ '$ref' => '#/components/schemas/User-read.User' ]
+								'schema' => [ '$ref' => '#/components/schemas/Token' ]
 							]
 						]
 					]

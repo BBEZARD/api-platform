@@ -1,0 +1,17 @@
+[33mcommit b062a3b80297b27c30b073eb939e56994684179e[m[33m ([m[1;36mHEAD -> [m[1;32mjwt[m[33m, [m[1;31morigin/jwt[m[33m)[m
+Author: Bruno Bezard <contact@hourraweb.fr>
+Date:   Mon Sep 19 17:42:48 2022 +0200
+
+    Mise en place de la gestion Token JWT
+
+[33mcommit 8bd18a59b3ab8d5f4711c3629ea8e7379063da13[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: Bruno Bezard <contact@hourraweb.fr>
+Date:   Mon Sep 19 11:13:31 2022 +0200
+
+    api-plateform avec cookie json authentification
+
+[33mcommit cb58e77063752e35120677773e502c33a3385ede[m
+Author: Bruno Bezard <contact@hourraweb.fr>
+Date:   Tue Sep 13 10:17:57 2022 +0200
+
+    Add initial set of files

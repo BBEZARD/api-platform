@@ -4,9 +4,11 @@ namespace App\DataFixtures;
 
 use App\Entity\Adherent;
 use App\Entity\Town;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 
 class AppFixtures extends Fixture {
 
@@ -14,6 +16,12 @@ class AppFixtures extends Fixture {
 	 * @inheritDoc
 	 */
 	public function load( ObjectManager $manager ) {
+		$user = ( new User )
+			->setEmail( 'bruno.bezard@gmail.com' )
+			->setPassword('$2y$13$ECS60jbXFjBqWOpPTlh1cuMgxcpRztrTiEFmUDROVxGJdwlbdHopK');
+
+		$manager->persist( $user );
+
 		$faker = Faker\Factory::create( 'fr_FR' );
 		$towns = [];
 

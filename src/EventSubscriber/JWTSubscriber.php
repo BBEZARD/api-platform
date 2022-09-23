@@ -13,10 +13,8 @@ class JWTSubscriber implements EventSubscriberInterface {
 	 */
 	public function onLexikJwtAuthenticationOnJwtCreated( JWTCreatedEvent $event ): void {
 		$payload          = $event->getData();
-		$payload['email'] = $event->getUser()->getUserIdentifier();
+		$payload['username'] = $event->getUser()->getUserIdentifier();
 		$event->setData( $payload );
-
-//		dd($payload);
 	}
 
 	public static function getSubscribedEvents(): array {
